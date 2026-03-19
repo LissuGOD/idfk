@@ -1,0 +1,53 @@
+
+<!-- saved from url=(0132)https://amkfile.seamk.fi/studentmaterial/OpetusmateriaaliTekniikka/Makela_Petteri/TITE25/IoT25/FetctEsimerkki1/templates/result.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" src="./result_files/loader.js.download"></script>
+    
+    
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawTablePressure);
+
+
+      function drawTablePressure() {
+
+        //var data = google.visualization.arrayToDataTable(arr);
+
+        let pressure_arr = []
+        fetch('http://localhost:5000/api/meas')
+            .then((response) => {
+            return response.json();
+        })
+        .then((dataFromServer) => {
+            pressure_arr = dataFromServer;
+            console.log("fetch", pressure_arr)
+
+            var data = new google.visualization.DataTable();
+            // lisätään Tableen sarakkeet
+            data.addColumn('number', 'id');
+            data.addColumn('number', 'pressure');
+            data.addColumn('number', 'temperature');
+            data.addColumn('number', 'humidity');
+            // lisätään Tableen data
+            console.log("addtable", pressure_arr);
+            data.addRows(pressure_arr);
+
+            var options = {
+              title: 'Measurements',
+              curveType: 'function',
+              legend: { position: 'bottom' }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('linechart_div'));
+
+            chart.draw(data, options);            
+        })
+      }      
+
+    </script><script type="text/javascript" charset="UTF-8" src="./result_files/loader(1).js.download"></script>
+  <link id="load-css-0" rel="stylesheet" type="text/css" href="./result_files/tooltip.css"><link id="load-css-1" rel="stylesheet" type="text/css" href="./result_files/util.css"><script type="text/javascript" charset="UTF-8" src="./result_files/jsapi_compiled_default_module.js.download"></script><script type="text/javascript" charset="UTF-8" src="./result_files/jsapi_compiled_graphics_module.js.download"></script><script type="text/javascript" charset="UTF-8" src="./result_files/jsapi_compiled_ui_module.js.download"></script><script type="text/javascript" charset="UTF-8" src="./result_files/jsapi_compiled_corechart_module.js.download"></script></head>
+  <body>
+    <div id="linechart_div"></div>
+  
+
+</body></html>
