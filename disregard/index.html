@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Mittaukset</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Mittaus</th>
+            </tr>
+        </thead>
+        <tbody id="mittaustaulukko">
+
+        </tbody>
+    </table>
+
+    <script>
+        const mittaustaulukko = document.getElementById("mittaustaulukko");
+        const eventSource = new EventSource("/stream");
+
+        eventsource.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            
+            const uusirivi = document.createElement("tr");
+            const mittaussolu = document.createElement("td");
+            mittaussolu.textContent = data.mittaus;
+        
+            uusirivi.appendChild(mittaussolu);
+            mittaustaulukko.appendChild(uusirivi);
+        };
+
+        eventSource.onerror = function(error) {
+            console.log("SSE error:", error);
+        };
+
+    </script>
+</body>
+</html>
